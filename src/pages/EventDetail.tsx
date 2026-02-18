@@ -190,62 +190,89 @@ const EventDetail = () => {
             <div className="lg:col-span-1">
               <div className="sticky top-24">
                 <div className="bg-card rounded-2xl p-6 card-shadow mb-6">
-                  <div className="text-center mb-6">
-                    {event.price === 0 || event.price === null ? (
-                      <div className="text-3xl font-bold text-accent">FREE</div>
-                    ) : (
-                      <div className="text-3xl font-bold">₹{event.price}</div>
-                    )}
-                    <p className="text-sm text-muted-foreground">per person</p>
-                  </div>
-
-                  {spotsLeft <= 50 && spotsLeft > 0 && (
-                    <div className="bg-destructive/10 text-destructive rounded-lg p-3 text-center mb-4">
-                      <p className="text-sm font-medium">🔥 Only {spotsLeft} spots left!</p>
+                  {event.is_completed ? (
+                    <div className="text-center py-4">
+                      <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
+                        <BadgeCheck className="w-8 h-8 text-muted-foreground" />
+                      </div>
+                      <h3 className="text-xl font-bold mb-1">Event Completed</h3>
+                      <p className="text-sm text-muted-foreground mb-6">This event has already taken place.</p>
+                      
+                      <div className="flex flex-col gap-2">
+                        <Button variant="outline" className="w-full" asChild>
+                          <Link to="/archive">
+                            View All Winners
+                          </Link>
+                        </Button>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button variant="outline" size="sm">
+                            <Share2 className="w-4 h-4 mr-2" /> Share
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Heart className="w-4 h-4 mr-2" /> Save
+                          </Button>
+                        </div>
+                      </div>
                     </div>
+                  ) : (
+                    <>
+                      <div className="text-center mb-6">
+                        {event.price === 0 || event.price === null ? (
+                          <div className="text-3xl font-bold text-accent">FREE</div>
+                        ) : (
+                          <div className="text-3xl font-bold">₹{event.price}</div>
+                        )}
+                        <p className="text-sm text-muted-foreground">per person</p>
+                      </div>
+
+                      {spotsLeft <= 50 && spotsLeft > 0 && (
+                        <div className="bg-destructive/10 text-destructive rounded-lg p-3 text-center mb-4">
+                          <p className="text-sm font-medium">🔥 Only {spotsLeft} spots left!</p>
+                        </div>
+                      )}
+
+                      <div className="mb-4">
+                        <div className="flex justify-between text-sm mb-2">
+                          <span className="text-muted-foreground">Registration</span>
+                          <span className="font-medium">{Math.round((attendees / maxAttendees) * 100)}% full</span>
+                        </div>
+                        <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                          <div
+                            className="h-full gradient-bg rounded-full transition-all"
+                            style={{ width: `${(attendees / maxAttendees) * 100}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      <Button variant="hero" size="lg" className="w-full mb-4" asChild>
+                        <a
+                          href={event.registration_link || event.source_url || "#"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <ExternalLink className="w-4 h-4 mr-2" />
+                          Register Now
+                        </a>
+                      </Button>
+
+                      <div className="grid grid-cols-3 gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setIsSaved(!isSaved)}
+                          className={isSaved ? "text-destructive border-destructive" : ""}
+                        >
+                          <Heart className={`w-4 h-4 ${isSaved ? "fill-current" : ""}`} />
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Share2 className="w-4 h-4" />
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <CalendarPlus className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </>
                   )}
-
-                  <div className="mb-4">
-                    <div className="flex justify-between text-sm mb-2">
-                      <span className="text-muted-foreground">Registration</span>
-                      <span className="font-medium">{Math.round((attendees / maxAttendees) * 100)}% full</span>
-                    </div>
-                    <div className="h-2 bg-secondary rounded-full overflow-hidden">
-                      <div
-                        className="h-full gradient-bg rounded-full transition-all"
-                        style={{ width: `${(attendees / maxAttendees) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Register Button - links to actual registration page */}
-                  <Button variant="hero" size="lg" className="w-full mb-4" asChild>
-                    <a
-                      href={event.registration_link || event.source_url || "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      Register Now
-                    </a>
-                  </Button>
-
-                  <div className="grid grid-cols-3 gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setIsSaved(!isSaved)}
-                      className={isSaved ? "text-destructive border-destructive" : ""}
-                    >
-                      <Heart className={`w-4 h-4 ${isSaved ? "fill-current" : ""}`} />
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <Share2 className="w-4 h-4" />
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      <CalendarPlus className="w-4 h-4" />
-                    </Button>
-                  </div>
                 </div>
 
                 <div className="bg-card rounded-2xl p-6 card-shadow">
