@@ -17,6 +17,7 @@ interface EventCardProps {
   price: number | "free";
   attendees: number;
   maxAttendees: number;
+  isCompleted?: boolean;
 }
 
 const EventCard = ({
@@ -33,6 +34,7 @@ const EventCard = ({
   price,
   attendees,
   maxAttendees,
+  isCompleted = false,
 }: EventCardProps) => {
   const spotsLeft = maxAttendees - attendees;
   const isAlmostFull = spotsLeft <= 10;
@@ -117,8 +119,8 @@ const EventCard = ({
           </div>
 
           {/* CTA */}
-          <Button variant="hero" className="w-full">
-            Register Now
+          <Button variant={isCompleted ? "outline" : "hero"} className="w-full">
+            {isCompleted ? "View Details" : "Register Now"}
           </Button>
         </div>
       </div>
